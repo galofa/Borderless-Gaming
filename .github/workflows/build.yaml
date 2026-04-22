@@ -1,0 +1,19 @@
+name: Build Borderless Gaming
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+      - name: Restore NuGet Packages
+        run: nuget restore BorderlessGaming.sln
+      - name: Build Solution
+        run: msbuild BorderlessGaming.sln /p:Configuration=Release
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: BorderlessGaming-Binary
+          path: BorderlessGaming/bin/Release/
